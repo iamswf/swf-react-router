@@ -1,11 +1,40 @@
 
 
-import React from "react";
+import React, {Component} from "react";
 import diyReactRouter from './diy-react-router';
 
-const {BrowserRouter: Router, Route, Link} = diyReactRouter;
+const {BrowserRouter: Router, Route, Link, Redirect} = diyReactRouter;
 
-// import {BrowserRouter as Router, Route, Link} from "react-router-dom";
+class MyRedirect extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            loggedIn: false
+        };
+    }
+
+    componentDidMount() {
+        setTimeout(() => {
+            this.setState({
+                loggedIn: true
+            });
+        }, 5000);
+    }
+
+    render() {
+        return (
+            <Route
+                exact
+                path="/"
+                render={() => (
+                    this.state.loggedIn
+                        ? <Redirect to="/dashboard" />
+                        : <div>Please login</div>
+                )}
+            />
+        );
+    }
+}
 
 function App() {
     return (
@@ -21,6 +50,9 @@ function App() {
                     <li>
                         <Link to="/topics">Topics</Link>
                     </li>
+                    <li>
+                        <Link to="/dashboard">Dashboard</Link>
+                    </li>
                 </ul>
 
                 <hr />
@@ -28,6 +60,11 @@ function App() {
                 <Route exact path="/" component={Home} />
                 <Route path="/about" component={About} />
                 <Route path="/topics" component={Topics} />
+                <Route path="/dashboard" component={Dashboard} />
+
+                <hr />
+
+                <MyRedirect />
             </div>
         </Router>
     );
@@ -45,6 +82,14 @@ function About() {
     return (
         <div>
             <h2>About</h2>
+        </div>
+    );
+}
+
+function Dashboard() {
+    return (
+        <div>
+            <h2>Dashboard</h2>
         </div>
     );
 }
@@ -82,5 +127,6 @@ function Topic({match}) {
         </div>
     );
 }
+
 
 export default App;

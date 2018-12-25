@@ -28,7 +28,6 @@ class BrowserRouter extends Component {
     }
 
     render() {
-        debugger
         const rootMatch = {
             path: '/',
             url: '/',
